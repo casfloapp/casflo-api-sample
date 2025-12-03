@@ -1,4 +1,4 @@
-name = "casflo-api-ts"
+name = "casflo-api-sample"
 main = "dist/index.js"
 compatibility_date = "2024-05-01"
 compatibility_flags = ["nodejs_compat"]

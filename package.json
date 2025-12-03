@@ -1,0 +1,17 @@
+{
+  "name": "casflo-api-simple",
+  "version": "1.0.0",
+  "description": "Simple Casflo API for Cloudflare Workers",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy"
+  },
+  "dependencies": {
+    "hono": "^4.4.7"
+  },
+  "devDependencies": {
+    "wrangler": "^3.60.3"
+  }
+}

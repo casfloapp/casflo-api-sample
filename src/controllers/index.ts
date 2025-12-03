@@ -1,1 +1,0 @@
-export { BookController } from './book.js';

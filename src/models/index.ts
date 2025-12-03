@@ -1,1 +1,0 @@
-export { BookModel } from './book.js';

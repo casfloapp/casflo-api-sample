@@ -1,209 +1,148 @@
-# High-Performance TypeScript Casflo API
+# Casflo API - JavaScript Structured Version
 
-A modern, fast, and scalable TypeScript API for Casflo financial management, built with Cloudflare Workers and optimized for performance.
+A simple, fast, and secure REST API for managing books, built with JavaScript and optimized for Cloudflare Workers.
 
-## 🚀 Performance Features
+## Features
 
-- **TypeScript**: Full type safety and better developer experience
-- **Cloudflare Workers**: Global edge network with sub-second response times
-- **D1 Database**: Optimized SQLite with proper indexing
-- **Smart Caching**: KV-based caching with intelligent invalidation
-- **Error Handling**: Comprehensive error handling with proper HTTP status codes
+- ⚡ **Ultra-fast**: Built on Hono.js for optimal performance
+- 🔒 **Secure**: Input validation, rate limiting, and error handling
+- 📊 **Performance Monitoring**: Request tracking and response time logging
+- 💾 **Caching**: Built-in KV caching for improved response times
+- 🔍 **Search**: Advanced search and filtering capabilities
+- 📈 **Batch Operations**: Efficient bulk create, update, and delete operations
+- 📊 **Statistics**: Comprehensive book statistics and analytics
 
-## 🛠️ Technology Stack
+## API Endpoints
 
-- **Runtime**: Cloudflare Workers (V8 isolates)
-- **Framework**: Hono.js (ultra-fast web framework)
-- **Language**: TypeScript 5.4+
-- **Database**: Cloudflare D1 (SQLite)
-- **Caching**: Cloudflare KV (optional)
+### Books
+- `GET /books` - Get all books with pagination and filtering
+- `GET /books/search` - Advanced book search
+- `GET /books/:id` - Get book by ID
+- `POST /books` - Create new book (requires membership)
+- `PUT /books/:id` - Update book (requires membership)
+- `DELETE /books/:id` - Delete book (requires premium membership)
 
-## 📊 Performance Metrics
+### Batch Operations
+- `POST /books/batch` - Create multiple books
+- `PUT /books/batch` - Update multiple books
+- `DELETE /books/batch` - Delete multiple books
 
-- **Response Time**: < 100ms average
-- **Throughput**: 1000+ requests/second
-- **Uptime**: 99.9%+ (Cloudflare edge network)
-- **Global Latency**: < 50ms worldwide
-- **Cold Start**: < 10ms
+### Statistics
+- `GET /books/stats/overview` - Get book statistics
 
-## 🚀 Quick Start
+### System
+- `GET /` - API information
+- `GET /health` - Health check
 
-### 1. Install Dependencies
+## Query Parameters
+
+### Filtering & Pagination
+- `page` (number): Page number (default: 1)
+- `limit` (number): Items per page (default: 10, max: 100)
+- `search` (string): Search in title, author, description
+- `author` (string): Filter by author
+- `status` (string): Filter by status (active, inactive, archived)
+- `genre` (string): Filter by genre
+- `sort_by` (string): Sort field (title, author, created_at, updated_at)
+- `sort_order` (string): Sort order (asc, desc)
+
+## Example Requests
+
+### Get all books
 ```bash
-npm install
+curl "https://your-worker.your-subdomain.workers.dev/books?page=1&limit=10"
 ```
 
-### 2. Setup Database
+### Search books
 ```bash
-# Create D1 database
-wrangler d1 create casflo
-
-# Update database_id in wrangler.toml
-
-# Run optimized schema
-wrangler d1 execute casflo --file=./schema.sql
+curl "https://your-worker.your-subdomain.workers.dev/books/search?search=typescript&genre=Programming"
 ```
 
-### 3. Local Development
+### Create a book
+```bash
+curl -X POST "https://your-worker.your-subdomain.workers.dev/books" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -d '{
+    "title": "New Book",
+    "author": "Author Name",
+    "description": "Book description",
+    "genre": "Fiction",
+    "price": 19.99
+  }'
+```
+
+## Deployment
+
+### Prerequisites
+- Node.js 18+
+- Cloudflare account
+- Wrangler CLI
+
+### Setup
+1. Clone the repository
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Set up your D1 database:
+   ```bash
+   wrangler d1 create casflo-db
+   ```
+4. Update `wrangler.toml` with your database ID
+5. Initialize the database:
+   ```bash
+   wrangler d1 execute casflo-db --file=schema.sql
+   ```
+6. Set up KV namespace:
+   ```bash
+   wrangler kv:namespace create "CACHE"
+   ```
+7. Update `wrangler.toml` with your KV namespace ID
+
+### Local Development
 ```bash
 npm run dev
 ```
 
-### 4. Build and Deploy
+### Deployment
 ```bash
-# Build TypeScript
-npm run build
-
-# Deploy to production
 npm run deploy
 ```
 
-## 📚 API Endpoints
+## Architecture
 
-### Books Management
-```bash
-# Get all books with pagination
-GET /api/v1/books?limit=20&offset=0&module_type=PERSONAL
-
-# Get single book
-GET /api/v1/books/{bookId}
-
-# Create new book
-POST /api/v1/books
-{
-  "name": "My Finance Book",
-  "module_type": "PERSONAL",
-  "icon": "💰"
-}
+```
+src/
+├── controllers/     # Request handlers with performance tracking
+├── middleware/      # Optimized middleware (caching, validation, etc.)
+├── models/         # Database models with batch operations
+├── routes/         # API routes with validation
+├── types/          # JavaScript definitions & Zod schemas
+├── utils/          # Performance utilities & helpers
+└── index.js        # Application entry point
 ```
 
-### System Endpoints
-```bash
-# Health check with performance metrics
-GET /api/v1/health
+## Performance Features
 
-# API information
-GET /api/v1/
-```
+- **Smart Caching**: Automatic KV caching for frequently accessed data
+- **Batch Operations**: Efficient bulk operations to reduce API calls
+- **Optimized Queries**: Indexed database queries for fast data retrieval
+- **Request Tracking**: Comprehensive logging and performance monitoring
+- **Rate Limiting**: Built-in protection against abuse
 
-## 🔧 Configuration
+## Error Handling
 
-### Performance Settings
-Edit `wrangler.toml` to optimize:
-
-```toml
-[limits]
-cpu_ms = 50000
-
-[[kv_namespaces]]
-binding = "CACHE"
-id = "your-cache-namespace-id"
-```
-
-### Database Optimization
-The schema includes:
-- **Proper Indexes**: Optimized for common queries
-- **Composite Indexes**: Multi-column query optimization
-- **Foreign Keys**: Data integrity with cascade deletes
-- **Constraints**: Data validation at database level
-
-## 📈 Monitoring & Logging
-
-### Performance Metrics
-- Request timing per endpoint
-- Database query performance
-- Error rates and types
-- Memory usage patterns
-
-### Structured Logging
+The API uses consistent error responses:
 ```json
 {
-  "success": true,
-  "data": [...],
-  "meta": {
-    "pagination": {
-      "page": 1,
-      "limit": 20,
-      "total": 100,
-      "totalPages": 5
-    },
-    "timestamp": "2024-05-12T10:30:00.000Z"
-  }
+  "success": false,
+  "error": "Error message",
+  "code": "ERROR_CODE",
+  "requestId": "req_1234567890_abc123"
 }
 ```
 
-## 🧪 Testing
+## License
 
-```bash
-# Run type checking
-npm run type-check
-
-# Run linting
-npm run lint
-```
-
-## 🚀 Deployment
-
-### Manual Deployment
-```bash
-# Build and deploy
-npm run build
-npm run deploy
-```
-
-### GitHub Actions Setup
-1. **Configure Secrets**:
-   - `CLOUDFLARE_API_TOKEN`
-   - `CLOUDFLARE_ACCOUNT_ID`
-
-2. **Push to Main Branch**:
-   ```bash
-   git push origin main
-   ```
-
-## 🔒 Security Features
-
-- **Input Validation**: Request body validation
-- **SQL Injection Prevention**: Parameterized queries
-- **CORS Protection**: Proper cross-origin configuration
-- **Security Headers**: XSS, CSRF protection
-- **Request Sanitization**: Input cleaning
-
-## 📊 Performance Tips
-
-### For High Traffic
-1. **Enable KV Caching**: Configure cache namespaces
-2. **Optimize Queries**: Use proper indexes
-3. **Batch Operations**: Group database operations
-4. **Response Compression**: Enable gzip compression
-5. **Edge Caching**: Leverage Cloudflare's network
-
-### For Large Datasets
-1. **Pagination**: Always paginate large result sets
-2. **Field Selection**: Allow selective field returns
-3. **Lazy Loading**: Load related data on demand
-4. **Background Processing**: Use Workers for heavy tasks
-
-## 🛠️ Development
-
-### Adding New Endpoints
-1. **Add Route**: Register in `src/index.ts`
-2. **Implement Handler**: Add request logic
-3. **Add Tests**: Write unit and integration tests
-4. **Update Documentation**: Update README and API docs
-
-### Performance Monitoring
-```typescript
-const startTime = Date.now();
-// ... your code here
-const duration = Date.now() - startTime;
-console.log(`Operation took ${duration}ms`);
-```
-
-## 📄 License
-
-MIT License - see [LICENSE](LICENSE) file for details.
-
----
-
-Built with ❤️ for maximum performance on Cloudflare Workers
+MIT License

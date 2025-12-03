@@ -1,25 +1,23 @@
-name = "casflo-api-sample"
-main = "dist/index.js"
-compatibility_date = "2024-05-01"
+name = "casflo-api-js-structured"
+main = "src/index.js"
+compatibility_date = "2024-01-15"
 compatibility_flags = ["nodejs_compat"]
+
+# D1 Database
+[[d1_databases]]
+binding = "DB"
+database_name = "casflo-db"
+database_id = "your-database-id-here"
+
+# KV Cache
+[[kv_namespaces]]
+binding = "CACHE"
+id = "your-kv-namespace-id"
+preview_id = "your-preview-kv-namespace-id"
 
 # Environment variables
 [vars]
-ENVIRONMENT = "production"
-API_VERSION = "v1"
-
-# Database binding
-[[d1_databases]]
-binding = "DB"
-database_name = "casflo"
-database_id = "fb305b83-a406-4454-a25c-c35c0482ca12"
-
-# KV for caching (optional but recommended for performance)
-[[kv_namespaces]]
-binding = "CACHE"
-id = "your-cache-namespace-id"
-preview_id = "your-preview-cache-namespace-id"
-
-# Performance limits
-[limits]
-cpu_ms = 50000
+ENVIRONMENT = "development"
+API_VERSION = "1.0.0"
+CACHE_TTL = "300"
+MAX_REQUEST_SIZE = "10485760"

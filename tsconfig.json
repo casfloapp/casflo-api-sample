@@ -13,33 +13,18 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "forceConsistentCasingInFileNames": true,
-    "declaration": true,
-    "declarationMap": true,
-    "sourceMap": true,
+    "declaration": false,
+    "sourceMap": false,
     "outDir": "./dist",
     "rootDir": "./src",
     "baseUrl": ".",
-    "paths": {
-      "@/*": ["src/*"],
-      "@/controllers/*": ["src/controllers/*"],
-      "@/middleware/*": ["src/middleware/*"],
-      "@/models/*": ["src/models/*"],
-      "@/routes/*": ["src/routes/*"],
-      "@/services/*": ["src/services/*"],
-      "@/utils/*": ["src/utils/*"],
-      "@/types/*": ["src/types/*"],
-      "@/config/*": ["config/*"]
-    },
     "types": ["@cloudflare/workers-types"]
   },
   "include": [
-    "src/**/*",
-    "config/**/*",
-    "vitest.config.ts"
+    "src/**/*"
   ],
   "exclude": [
     "node_modules",
-    "dist",
-    "tests"
+    "dist"
   ]
 }

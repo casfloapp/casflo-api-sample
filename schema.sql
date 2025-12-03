@@ -44,7 +44,7 @@ CREATE INDEX IF NOT EXISTS idx_users_created_at ON users(created_at);
 
 CREATE INDEX IF NOT EXISTS idx_books_created_by ON books(created_by);
 CREATE INDEX IF NOT EXISTS idx_books_module_type ON books(module_type);
-CREATE INDEX IF NOT EXISTS idx_books_created_at ON books(created_at);
+CREATE INDEX IF NOT EXISTS idx_books_created_at ON books(created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_books_name_search ON books(name); -- For search functionality
 
 CREATE INDEX IF NOT EXISTS idx_book_members_book_id ON book_members(book_id);
